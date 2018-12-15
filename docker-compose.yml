@@ -1,0 +1,27 @@
+version: "3"
+
+services: 
+  discovery:
+    build: ./discovery
+    ports:
+    - "8761:8761"
+    volumes:
+    - ./discovery/target:/opt
+    networks: 
+    - food
+
+  config:
+    build: ./config
+    ports:
+    - "8888:8888"
+    volumes:
+    - ./config/target:/opt
+    networks: 
+    - food
+    environment: 
+    - EUREKA_HOME=http://discovery:8761/eureka/
+    depends_on: 
+    - discovery
+
+networks:
+  food:
